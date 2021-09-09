@@ -318,6 +318,6 @@ variable "ebs_volume_encrypted" {
   default     = true
 }
 
-variable "eip_allocation_id" {
-  default = null
+variable "eip_allocation_ids" {
+  default = []
 }

@@ -144,14 +144,14 @@ module "ssh_key_pair" {
 
 
 resource "aws_eip_association" "eip_assoc" {
-  count = var.eip_allocation_id == null ? 0 : 1
-  instance_id   = aws_instance.default.id
-  allocation_id = var.eip_allocation_id
+  count = length(var.eip_allocation_ids)
+  instance_id   = aws_instance.default[count.index].id
+  allocation_id = var.eip_allocation_ids[count.index]
 }
 
 
 resource "aws_eip" "default" {
-  count             = var.eip_allocation_id == null ? local.count_default_ips : 0
+  count             = length(var.eip_allocation_ids) == 0 ? local.count_default_ips : 0
   network_interface = aws_instance.default.*.primary_network_interface_id[count.index]
   vpc               = true
   depends_on        = [aws_instance.default]
