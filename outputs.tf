@@ -28,6 +28,8 @@ output "name" {
   value       = module.label.id
 }
 
+
+/*
 output "aws_key_pair_name" {
   description = "Name of AWS key pair"
   value       = signum(length(var.ssh_key_pair)) == 1 ? var.ssh_key_pair : var.generate_ssh_key_pair ? module.ssh_key_pair.key_name : ""
@@ -41,7 +43,7 @@ output "new_ssh_keypair_generated" {
 output "ssh_key_pem_path" {
   description = "Path where SSH key pair was created (if applicable)"
   value       = "${local.ssh_key_pair_path}/${module.ssh_key_pair.key_name}.pem"
-}
+}*/
 
 output "security_group_ids" {
   description = "ID on the new AWS Security Group associated with creating instance"
