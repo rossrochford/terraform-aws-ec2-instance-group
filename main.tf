@@ -91,7 +91,7 @@ resource "aws_instance" "default" {
   user_data                   = var.user_data
   iam_instance_profile        = join("", aws_iam_instance_profile.default.*.name)
   associate_public_ip_address = var.associate_public_ip_address
-  #key_name                    = signum(length(var.ssh_key_pair)) == 1 ? var.ssh_key_pair : module.ssh_key_pair.key_name
+  # key_name                  = signum(length(var.ssh_key_pair)) == 1 ? var.ssh_key_pair : module.ssh_key_pair.key_name
   key_name                    = aws_key_pair.imported.key_name
   subnet_id                   = var.subnet
   monitoring                  = var.monitoring
@@ -139,10 +139,19 @@ module "ssh_key_pair" {
   generate_ssh_key      = var.generate_ssh_key_pair
 
   context = module.this.context
-}*/
+}
+*/
+
+
+resource "aws_eip_association" "eip_assoc" {
+  count = var.eip_allocation_id == null ? 0 : 1
+  instance_id   = aws_instance.default.id
+  allocation_id = var.eip_allocation_id
+}
+
 
 resource "aws_eip" "default" {
-  count             = local.count_default_ips
+  count             = var.eip_allocation_id == null ? local.count_default_ips : 0
   network_interface = aws_instance.default.*.primary_network_interface_id[count.index]
   vpc               = true
   depends_on        = [aws_instance.default]

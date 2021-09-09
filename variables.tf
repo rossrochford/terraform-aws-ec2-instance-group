@@ -317,3 +317,7 @@ variable "ebs_volume_encrypted" {
   description = "Size of the EBS volume in gigabytes"
   default     = true
 }
+
+variable "eip_allocation_id" {
+  default = null
+}
